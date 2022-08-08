@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'components/atoms/Button/Button';
-
+import styles from './SearchBar.module.scss'
 class Searchbar extends Component {
     state={
         value: ''
@@ -13,14 +13,14 @@ class Searchbar extends Component {
   render() {
     const {onSubmit} = this.props
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={(e) => onSubmit(e, this.state.value)}>
-          <Button type="submit" className="SearchForm-button">
+      <header className={styles.Searchbar}>
+        <form className={styles.SearchForm} onSubmit={(e) => onSubmit(e, this.state.value)}>
+          <Button type="submit">
             
           </Button>
 
           <input
-            className="input"
+            className={styles.SearchFormInput}
             type="text"
             autoComplete="off"
             autoFocus

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import styles from './ImageGallryItem.module.scss'
 
 class ImageGalleryItem extends Component {
   render() {
-    const  {imageSrc, imageAlt, key} = this.props
+    const  {imageSrc, imageAlt, key, onClick ,largeSrc} = this.props
     return (
-      <li key={key} className="galleryItem">
-        <img src={imageSrc} alt={imageAlt}  />
+      <li key={key} className={styles.ImageGalleryItem} onClick={(e) =>onClick(e,largeSrc)}>
+        <img className={styles.ImageGalleryItemImage} src={imageSrc}  alt={imageAlt}  />
       </li>
     );
   }
