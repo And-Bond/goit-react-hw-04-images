@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styles from './Modal.module.scss';
 import { createPortal } from 'react-dom';
+import proptypes from 'prop-types'
 class Modal extends Component {
   render() {
-    const { largeImage, onOverlayClick, onEspClick } = this.props;
+    const { largeImage, onOverlayClick } = this.props;
     const modalWindow = document.querySelector('#modal');
     const render = imageData => {
       return (
@@ -21,5 +22,9 @@ class Modal extends Component {
     return createPortal(render(largeImage), modalWindow);
   }
 }
+Modal.propTypes = {
+  largeImage: proptypes.string,
+  onOverlayClick: proptypes.func,
 
+}
 export default Modal;
