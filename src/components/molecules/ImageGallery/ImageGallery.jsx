@@ -13,7 +13,7 @@ class ImageGallery extends Component {
           return (
             <>
               <ImageGalleryItem
-                onClick={onClick}
+                onClick={() => onClick(largeImageURL)}
                 imageSrc={previewURL}
                 largeSrc={largeImageURL}
                 imageAlt={tags}

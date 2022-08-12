@@ -42,11 +42,14 @@ export class App extends Component {
       loader: false,
     });
   };
-  onModalClick = (e, largeImage) => {
+  onModalClick = ( largeImage) => {
     this.setState({
       modalLargeImage: largeImage,
-      modal: true,
+      modal: true
     });
+    setTimeout(() => {
+      console.log(this.state.modalLargeImage)
+    }, 100)
   };
   onLoadMoreClick = () => {
     this.setState(prevState => {
@@ -65,27 +68,14 @@ export class App extends Component {
         .finally(this.setState({ loader: false }));
     }, 100);
   };
-  onOverlayClick = () => {
-    this.setState({
-      modalLargeImage: '',
-      modal: false,
-    });
-  };
-  onEspClick = e => {
-    if (e.key === 'Escape') {
-      this.setState({
-        modalLargeImage: '',
-        modal: false,
-      });
-    }
-  };
+
+ 
 
   render() {
-    document.body.classList.add('App');
-    window.addEventListener('keydown', this.onEspClick);
+    
     return (
-      <>
-        <Searchbar onSubmit={this.onSubmit}></Searchbar>
+      <div className='App'>
+        <Searchbar onSubmit={this.onSubmit} />
         {this.state.loader ? (
           <Loader />
         ) : (
@@ -96,15 +86,15 @@ export class App extends Component {
             submitted={this.state.submitted}
           />
         )}
-        {this.state.modal && (
           <Modal
             largeImage={this.state.modalLargeImage}
             onEspClick={this.onEspClick}
             onOverlayClick={this.onOverlayClick}
-          ></Modal>
-        )}
+            modal={this.state.modal}
+           />
         
-      </>
+      </div>
+
     );
   }
 }
