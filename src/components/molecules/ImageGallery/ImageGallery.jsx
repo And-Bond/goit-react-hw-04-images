@@ -9,7 +9,8 @@ class ImageGallery extends Component {
         <>
       <ul className={styles.ImageGallery}>
         {submitted && content.length === 0 ? <h1>Please enter valid value</h1> : 
-        content?.flatMap(({ previewURL, tags, id, largeImageURL }) => {
+        content?.map(({ previewURL, tags, id, largeImageURL }) => {
+          console.log(id)
           return (
             <>
               <ImageGalleryItem
@@ -17,7 +18,7 @@ class ImageGallery extends Component {
                 imageSrc={previewURL}
                 largeSrc={largeImageURL}
                 imageAlt={tags}
-                key={id.toString()}
+                key={id?.toString()}
               />
               
             </>

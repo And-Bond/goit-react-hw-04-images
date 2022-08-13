@@ -7,74 +7,70 @@ import Modal from './organism/Modal/Modal';
 
 export class App extends Component {
   state = {
-    inputValue: '',
     content: [],
     submitted: false,
     modal: false,
     modalLargeImage: '',
     loader: false,
     pageNumber: 1,
+    inputValue: '',
   };
-  onSubmit = (e, currentInputValue) => {
-    e.preventDefault();
-    this.setState({
-      inputValue: currentInputValue,
-      loader: true,
-    });
-
-    setTimeout(() => {
-      galleryFetch(
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.inputValue !== this.state.inputValue ||
+      prevState.pageNumber !== this.state.pageNumber
+    ) {
+      return galleryFetch(
         this.state.inputValue,
         this.state.pageNumber,
         12
       ).then(this.makeRender);
-      this.setState(prevState => {
-        return {
-          pageNumber: prevState.pageNumber + 1,
-        };
-      });
-    }, 100);
+    }
+  }
+  onSubmit = (e, currentInputValue) => {
+    e.preventDefault();
+    this.setState({
+      loader: true,
+      inputValue: currentInputValue,
+    });
   };
   makeRender = content => {
-    this.setState({
-      content: content.hits,
-      submitted: true,
-      loader: false,
-    });
+    if (this.state.pageNumber === 1) {
+      this.setState({ content: content.hits, submitted: true, loader: false });
+    } else {
+      this.setState((prevState) => {
+        return { content: [...prevState.content,...content.hits], submitted: true, loader: false };
+      });
+    }
   };
-  onModalClick = ( largeImage) => {
+  onModalClick = largeImage => {
+      this.setState({
+        modalLargeImage: largeImage,
+        modal: true,
+      });
+  };
+  onEspClick = () => {
+      this.setState({
+        modalLargeImage: '',
+        modal: false,
+      });
+  };
+  onOverlayClick = () => {
     this.setState({
-      modalLargeImage: largeImage,
-      modal: true
+      modalLargeImage: '',
+      modal: false,
     });
-    setTimeout(() => {
-      console.log(this.state.modalLargeImage)
-    }, 100)
   };
   onLoadMoreClick = () => {
     this.setState(prevState => {
-      return { pageNumber: prevState.pageNumber + 1, loader: true };
+      return { pageNumber: prevState.pageNumber + 1 };
     });
-    setTimeout(() => {
-      galleryFetch(
-        this.state.inputValue,
-        this.state.pageNumber,
-        12
-      ).then(({hits}) => {
-        this.setState({
-          content: [...this.state.content, ...hits]
-        })
-      })
-        .finally(this.setState({ loader: false }));
-    }, 100);
   };
 
- 
 
   render() {
-    
     return (
-      <div className='App'>
+      <div className="App">
         <Searchbar onSubmit={this.onSubmit} />
         {this.state.loader ? (
           <Loader />
@@ -86,15 +82,15 @@ export class App extends Component {
             submitted={this.state.submitted}
           />
         )}
+        {this.state.modal && (
           <Modal
             largeImage={this.state.modalLargeImage}
             onEspClick={this.onEspClick}
             onOverlayClick={this.onOverlayClick}
             modal={this.state.modal}
-           />
-        
+          />
+        )}
       </div>
-
     );
   }
 }
